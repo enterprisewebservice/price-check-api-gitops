@@ -1,0 +1,20 @@
+# Public hostname: an OpenShift Route in the gateway's namespace that terminates
+# TLS with the cluster certificate and hands the request to the gateway's
+# Service. DNS already resolves *.apps.salamander.aimlworkbench.com to the routers.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: api-price-check
+  namespace: api-demo
+  labels:
+    governed-api/name: price-check
+spec:
+  host: api-price-check.apps.salamander.aimlworkbench.com
+  to:
+    kind: Service
+    name: api-gateway-istio
+  port:
+    targetPort: 80
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
